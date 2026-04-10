@@ -60,6 +60,7 @@ git checkout develop
 ```
 git ls-remote --heads https://github.com/ShineLShine/test.git
 ```
+![示例图片](/src/1.png)
 ---
 ### 1.2 命令行创建分支
 #### 创建分支（不切换）
@@ -105,6 +106,7 @@ git push -u origin <分支名>
 #3：不知道当前在哪个分支(当前分支前面会有 *)
 git branch
 ```
+![示例图片](/src/2.png)
 
 * 示例
 ```
