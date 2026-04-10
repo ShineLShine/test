@@ -12,74 +12,76 @@ git config --global user.email "you@example.com"
 ```
 ### 0.3 推荐基础配置（可选）
 ```bash
-# 默认主分支名称
+默认主分支名称
 git config --global init.defaultBranch main
 
-# Windows 建议
+Windows 建议
 git config --global core.autocrlf true
 
-# macOS / Linux 建议
+macOS / Linux 建议
 git config --global core.autocrlf input
 ```
 ---
 ## 1. 获取项目（clone / fetch / pull）
 ### 1.1 第一次获取项目：`git clone`
-#把远程仓库完整拉到本地（包含提交历史、分支信息）。
+* 把远程仓库完整拉到本地（包含提交历史、分支信息）。
 ```bash
 git clone https://github.com/ShineLShine/test.git
 
-#如果使用 SSH：
+如果使用 SSH：
 git clone git@github.com:ShineLShine/test.git
 
-# 克隆到指定目录名 (如果在克隆时没有指定绝对路径目录，则会默认克隆到 C:\Users\用户名)
+克隆到指定目录名 (如果在克隆时没有指定绝对路径目录，则会默认克隆到 C:\Users\用户名)
 git clone https://github.com/ShineLShine/test.git my-folder
 git clone https://github.com/ShineLShine/test.git C:\Users\用户名\my-folder
 
-# 克隆指定分支
+克隆指定分支
 git clone -b <分支名> <仓库地址>
 git clone -b develop https://github.com/ShineLShine/test.git
-# 只克隆最近 N 次提交（浅克隆）
+
+只克隆最近 N 次提交（浅克隆）
 git clone --depth 1 https://github.com/ShineLShine/test.git
 ```
 
-#先克隆整个仓库，再切换分支
+* 先克隆整个仓库，再切换分支
 ```
 git clone https://github.com/ShineLShine/test.git
 cd demo
 git switch develop
+
 或旧命令：
 git checkout develop
 
-#克隆时查看有哪些分支（可选）
+克隆时查看有哪些分支（可选）
 git ls-remote --heads https://github.com/ShineLShine/test.git
 ```
 ---
 ### 1.2 命令行创建分支
-#创建分支（不切换）
+* 创建分支（不切换）
 ```
 git branch 分支名
-#然后手动切换
+手动切换
 git switch 分支名
 ```
-#创建并切换到新分支
+* 创建并切换到新分支
 ```
 git switch -c 分支名
-#或
+或
 git checkout -b 分支名
 ```
-#指定分支创建新分支
+* 指定分支创建新分支
 ```
 git switch main
 git switch -c 分支名
 或
 git checkout -b 分支名 main
 ```
-#指定 commit 创建分支（老版本紧急修复）
+* 指定 commit 创建分支（老版本紧急修复）
 ```
 git checkout -b hotfix/uart a1b2c3d
 ```
 
-#推送新分支到远程
+* 推送新分支到远程
 ```
 #第一次推送必须这样
 git push -u origin feature/login
@@ -87,7 +89,7 @@ git push -u origin feature/login
 git push
 ```
 
-#常见错误 & 解决方法
+* 常见错误 & 解决方法
 ```
 #1：clone 后发现不是想要的分支
 git switch <分支名>
@@ -99,7 +101,7 @@ git push -u origin <分支名>
 git branch
 ```
 
-#示例
+* 示例
 ```
 # 1. 克隆 develop 分支
 git clone -b main https://github.com/ShineLShine/test.git
@@ -114,7 +116,6 @@ git commit -m "feat: 增加串口自动监听"
 
 # 4. 推送分支
 git push -u origin 新分支名
-``
 ```
 ---
 ### 1.3 更新远程信息：`git fetch`
@@ -127,9 +128,8 @@ git branch -r
 ### 1.4 拉取并合并：`git pull`
 ```bash
 git pull origin main
-```
+
 推荐团队常用（保持历史线性）：
-```bash
 git pull --rebase origin main
 ```
 ---
@@ -196,8 +196,7 @@ git push origin main
 ### 4.1 冲突提示
 ```text
 CONFLICT (content): Merge conflict in src/app.py
-```
-```bash
+
 git status
 ```
 ---
@@ -284,9 +283,9 @@ git checkout -b release/2026Q2 origin/release/2026Q2
 推送                git push
 新建分支            git checkout -b <branch>
 合并分支            git merge <branch>
-解决冲突（merge）    git add ... && git commit
-解决冲突（rebase）   git add ... && git rebase --continue
-放弃合并/变基        git merge --abort / git rebase --abort
+解决冲突（merge）   git add ... && git commit
+解决冲突（rebase）  git add ... && git rebase --continue
+放弃合并/变基       git merge --abort / git rebase --abort
 切 tag/commit       git checkout <tag-or-hash>
 ```
 ---
