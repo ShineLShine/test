@@ -24,64 +24,69 @@ git config --global core.autocrlf input
 ---
 ## 1. 获取项目（clone / fetch / pull）
 ### 1.1 第一次获取项目：`git clone`
-* 把远程仓库完整拉到本地（包含提交历史、分支信息）。
-```bash
+#### 把远程仓库完整拉到本地（包含提交历史、分支信息）。
+```
 git clone https://github.com/ShineLShine/test.git
-
 如果使用 SSH：
 git clone git@github.com:ShineLShine/test.git
-
-克隆到指定目录名 (如果在克隆时没有指定绝对路径目录，则会默认克隆到 C:\Users\用户名)
+```
+#### 克隆到指定目录名 (如果在克隆时没有指定绝对路径目录，则会默认克隆到 C:\Users\用户名)
+```
 git clone https://github.com/ShineLShine/test.git my-folder
 git clone https://github.com/ShineLShine/test.git C:\Users\用户名\my-folder
-
-克隆指定分支
+```
+#### 克隆指定分支
+```
 git clone -b <分支名> <仓库地址>
 git clone -b develop https://github.com/ShineLShine/test.git
+```
 
-只克隆最近 N 次提交（浅克隆）
+#### 只克隆最近 N 次提交（浅克隆）
+```
 git clone --depth 1 https://github.com/ShineLShine/test.git
 ```
 
-* 先克隆整个仓库，再切换分支
+#### 先克隆整个仓库，再切换分支
 ```
 git clone https://github.com/ShineLShine/test.git
-cd demo
+cd test
 git switch develop
 
 或旧命令：
 git checkout develop
+```
 
-克隆时查看有哪些分支（可选）
+#### 克隆时查看有哪些分支（可选）
+```
 git ls-remote --heads https://github.com/ShineLShine/test.git
 ```
 ---
 ### 1.2 命令行创建分支
-* 创建分支（不切换）
+#### 创建分支（不切换）
 ```
 git branch 分支名
 手动切换
 git switch 分支名
 ```
-* 创建并切换到新分支
+#### 创建并切换到新分支
 ```
 git switch -c 分支名
 或
 git checkout -b 分支名
 ```
-* 指定分支创建新分支
+#### 指定分支创建新分支
 ```
 git switch main
 git switch -c 分支名
 或
 git checkout -b 分支名 main
 ```
-* 指定 commit 创建分支（老版本紧急修复）
+#### 指定 commit 创建分支（老版本紧急修复）
 ```
 git checkout -b hotfix/uart a1b2c3d
 ```
 
-* 推送新分支到远程
+#### 推送新分支到远程
 ```
 #第一次推送必须这样
 git push -u origin feature/login
@@ -89,7 +94,7 @@ git push -u origin feature/login
 git push
 ```
 
-* 常见错误 & 解决方法
+#### 常见错误 & 解决方法
 ```
 #1：clone 后发现不是想要的分支
 git switch <分支名>
@@ -103,7 +108,7 @@ git branch
 
 * 示例
 ```
-# 1. 克隆 develop 分支
+# 1. 克隆 main 分支
 git clone -b main https://github.com/ShineLShine/test.git
 cd test
 
@@ -118,32 +123,45 @@ git commit -m "feat: 增加串口自动监听"
 git push -u origin 新分支名
 ```
 ---
-### 1.3 更新远程信息：`git fetch`
+### 1.3 查看分支
+```
+git branch
+查看远程分支
+git branch -r
+```
+---
+### 1.4 更新远程信息：`git fetch`
 ```bash
 git fetch origin
 git branch -r
 ```
 > `fetch` 只下载更新，不会修改当前代码。
 ---
-### 1.4 拉取并合并：`git pull`
+### 1.5 拉取并合并：`git pull`
 ```bash
+拉取指定分支
 git pull origin main
 
 推荐团队常用（保持历史线性）：
-git pull --rebase origin main
+git pull
+--rebase origin main
 ```
 ---
 ## 2. 推送项目（add / commit / push）
 ### 2.1 基本流程
 ```bash
+查看当前修改状态
 git status
 
+添加所有修改
 git add .
-# 或单个文件
+# 或指定文件
 git add src/app.py
 
+提交本地修改（commit）
 git commit -m "feat: add login endpoint"
 
+推送到远程仓库（push）
 git push origin main
 ```
 ---
@@ -175,7 +193,7 @@ git remote -v
 ```bash
 git checkout main
 git pull origin main
-git merge feature/login
+git merge shine
 git push origin main
 ```
 ---
@@ -193,14 +211,20 @@ git push origin main
 > ⚠ 不要对已经共享给他人的公共分支随意 rebase。
 ---
 ## 4. 合并冲突解决（详细流程）
-### 4.1 冲突提示
+### 4.1 冲突是怎么产生的?
+满足这 3 个条件之一就会产生冲突
+* ✅ 同一个文件
+* ✅ 同一段代码
+* ✅ 不同分支都改过
+  
+### 4.2 冲突提示
 ```text
-CONFLICT (content): Merge conflict in src/app.py
+CONFLICT (content): Merge conflict in .....
 
 git status
 ```
 ---
-### 4.2 冲突文件示例
+### 4.3 冲突文件示例
 ```text
 <<<<<<< HEAD
 console.log("main branch");
@@ -209,28 +233,48 @@ console.log("feature branch");
 >>>>>>> feature/login
 ```
 ---
-### 4.3 解决步骤（推荐顺序）
-打开冲突文件
-删除 `<<<<<<< ======= >>>>>>>` 标记
-编写最终代码
-标记为已解决
-```bash
-git add src/app.js
+### 4.4 解决冲突步骤
+#### 放弃本次合并（不想合了）
 ```
-继续操作：
-```bash
-# merge 冲突
+git merge --abort
+```
+
+#### ✅ 方法一
+```
+1. 手动修改代码
+你决定最终代码如下：
+Cprintf("UART initialization failed\n");
+
+2. 并删除所有冲突标志：
+Plain Text<<<<<<<=======>>>>>>>显示更多行
+
+3. 标记冲突已解决
+git add src/main.c
+
+4. 完成合并提交（Git 会自动生成 merge commit 信息）
+git commit
+```
+
+#### ✅ 方法二
+```
+1. 手动修改代码
+你决定最终代码如下：
+Cprintf("UART initialization failed\n");
+
+2. 并删除所有冲突标志：
+Plain Text<<<<<<<=======>>>>>>>显示更多行
+
+3. merge 冲突
 git commit
 
-# rebase 冲突
+4. rebase 冲突
 git rebase --continue
-```
-推送：
-```bash
+
+5. 推送
 git push
 ```
 ---
-### 4.4 常用“救命”命令
+### 4.5 常用“救命”命令
 ```bash
 git merge --abort
 git rebase --abort
@@ -271,7 +315,27 @@ git checkout -b release/2026Q2 origin/release/2026Q2
 ### 5.5 仅下载某版本源码（不保留历史）
 推荐：`git clone` + `git checkout`
 ---
-## 6. 日常最常用命令速查表
+## 6. 常用排错
+### 6.1 撤销修改（未 add）
+```
+git checkout -- src/main.c
+```
+### 6.2 撤销 add（回到工作区）
+```
+git reset HEAD src/main.c
+```
+### 6.3 查看文件是谁改的
+```
+git blame src/main.c
+```
+### 6.4 临时保存代码（stash）
+```
+git stash
+git pull
+git stash pop
+```
+
+## 7. 日常最常用命令速查表
 ```text
 克隆仓库            git clone <url>
 查看状态            git status
