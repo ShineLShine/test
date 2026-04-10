@@ -191,15 +191,33 @@ git remote -v
 确认 SSH Key / Token / 仓库权限。
 ---
 ## 3. 分支合并（merge / rebase）
-### 3.1 使用 `merge`
+### 3.1 确认当前是否有未提交的代码（很重要）
+```
+git status
+# 如果看到
+working tree clean
+# 说明可以继续;否则请先
+git add .
+git commit -m "save work"
+```
+
+### 3.1 使用 `merge` 方法
 ```bash
-git checkout main
+# 切换到main主分支
+git switch main
+# 拉取 main 最新代码（避免合并老代码）
 git pull origin main
+# 执行合并（shine → main）
 git merge shine
+# 如有冲突，标记解决
+git add <冲突文件
+# 完成合并提交
+git commit
+推送合并后的 main 到远程
 git push origin main
 ```
 ---
-### 3.2 使用 `rebase`
+### 3.2 使用 `rebase` 方法
 ```bash
 git checkout feature/login
 git fetch origin
@@ -336,8 +354,17 @@ git stash
 git pull
 git stash pop
 ```
+## 7. 删除本地与远程分支
+### 7.1 删除本地分支
+```
+git branch -d shine
+```
+### 7.2 删除远程分支
+```
+git push origin --delete shine
+```
 
-## 7. 日常最常用命令速查表
+## 8. 日常最常用命令速查表
 ```text
 克隆仓库            git clone <url>
 查看状态            git status
