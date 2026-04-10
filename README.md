@@ -270,7 +270,6 @@ git checkout -b release/2026Q2 origin/release/2026Q2
 ---
 ### 5.5 仅下载某版本源码（不保留历史）
 推荐：`git clone` + `git checkout`
-或使用 GitHub / GitLab 提供的 Source archive
 ---
 ## 6. 日常最常用命令速查表
 ```text
