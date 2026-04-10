@@ -302,6 +302,38 @@ git rebase --abort
 git diff
 git diff --merge
 ```
+
+### 4.6 合并提交（merge commit）的提交说明界面
+![示例图片](/src/3.png)
+#### ✅ 方案一（最常用）：直接接受默认提交说明
+1️⃣ 按 Esc（确保不在编辑模式）
+2️⃣ 输入：:wq
+3️⃣ 按 Enter
+
+#### ✅ 方案二：修改提交说明再保存
+1️⃣ 按 i（进入编辑模式）
+2️⃣ 把第一行改成你想要的，例如：merge: 合并 shine 分支到 main
+3️⃣ 按 Esc
+4️⃣ 输入：:wq
+5️⃣ 按 Enter
+
+#### ❌ 方案三：放弃这次合并（不建议用）
+如果你不想完成这次合并：:q!
+⚠️ 这样会终止 merge
+⚠️ 一般只在“合并错分支”的情况下用
+
+#### ✅怎么确认合并完成了
+退出 Vim 之后，看到命令行没有报错，再执行：
+```
+git status
+```
+如果看到：
+```
+On branch main
+nothing to commit, working tree clean
+```
+说明：shine → main 合并已完成,本地 main 是最新的
+
 ---
 ## 5. 获取指定版本代码（tag / commit / branch）
 ### 5.1 查看 tag
