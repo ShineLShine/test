@@ -215,8 +215,8 @@ git push origin main
 > ⚠ 不要对已经共享给他人的公共分支随意 rebase。
 ---
 ## 4. 合并冲突解决（详细流程）
-### 4.0 没有冲突，那就制造冲突
-#### ⚠️制造merge冲突
+### 4.0 没有冲突，那就制造冲突😂
+#### ⚠️制造 merge 冲突
 ```
 1️⃣ 当前在 main 分支
 git switch main
@@ -257,7 +257,6 @@ Hello from main
 =======
 Hello from shine
 >>>>>>> shine
-![示例图片](/src/4.png)
 
 🔟 解决冲突
 ✅ 方法 1：只保留 main
@@ -268,9 +267,15 @@ Hello from shine
 告诉 Git：冲突解决完成(会打开编辑器，直接保存即可)
 git add conflict.txt
 git commit
-![示例图片](/src/5.png)
 
+🛠️ 推送最终结果
+git push origin main
 ```
+*  冲突含义解释:
+![示例图片](/src/4.png)
+
+* 冲突编辑器:
+![示例图片](/src/5.png)
 
 ### 4.1 冲突是怎么产生的?
 满足这 3 个条件之一就会产生冲突
