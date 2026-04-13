@@ -215,6 +215,63 @@ git push origin main
 > ⚠ 不要对已经共享给他人的公共分支随意 rebase。
 ---
 ## 4. 合并冲突解决（详细流程）
+### 4.0 没有冲突，那就制造冲突
+#### ⚠️制造merge冲突
+```
+1️⃣ 当前在 main 分支
+git switch main
+
+2️⃣ 新建一个测试文件
+echo "Hello Git" > conflict.txt
+
+3️⃣ 提交到 main
+git add conflict.txt
+git commit -m "init: add conflict test file"
+此时 conflict.txt 内容是：conflict.txt
+
+4️⃣ 从 main 创建 shine 分支
+git switch -c shine
+
+5️⃣ 在 shine 分支修改同一行内容，把 conflict.txt 改成：Hello from shine 提交
+git add conflict.txtgit
+git commit -m "shine: modify conflict.txt"
+
+6️⃣ 切回 main 分支
+git switch main
+
+7️⃣ 在 main 分支也修改同一行内容，把 conflict.txt 改成：Hello from main 提交
+git add conflict.txt
+git commit -m "main: modify conflict.txt"
+
+8️⃣ 执行合并
+git merge shine
+
+💥 出现冲突
+CONFLICT (content): Merge conflict in conflict.txt
+Automatic merge failed; fix conflicts and then commit the result.
+
+9️⃣ 查看冲突内容
+打开文件你会看到 Git 的冲突标记
+<<<<<<< HEAD
+Hello from main
+=======
+Hello from shine
+>>>>>>> shine
+![示例图片](/src/4.png)
+
+🔟 解决冲突
+✅ 方法 1：只保留 main
+✅ 方法 2：只保留 shine
+✅ 方法 3：自己写最终版本
+⚠️ 删除所有冲突标记 <<<<<<< ======= >>>>>>>
+
+告诉 Git：冲突解决完成(会打开编辑器，直接保存即可)
+git add conflict.txt
+git commit
+![示例图片](/src/5.png)
+
+```
+
 ### 4.1 冲突是怎么产生的?
 满足这 3 个条件之一就会产生冲突
 * ✅ 同一个文件
