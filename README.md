@@ -62,7 +62,7 @@ git ls-remote --heads https://github.com/ShineLShine/test.git
 ```
 ![示例图片](/src/1.png)
 ---
-### 1.2 命令行创建分支
+### 1.2 命令行创建分支 `git branch`
 #### 创建分支（不切换）
 ```
 git branch 分支名
@@ -89,9 +89,9 @@ git checkout -b hotfix/uart a1b2c3d
 
 #### 推送新分支到远程
 ```
-#第一次推送必须这样
+#第一次推送必须这样(第一次推送新分支时，Git 不知道你要推到哪个远程、哪个分支)
 git push -u origin feature/login
-#之后就可以
+#之后就可以（因为 -u 已经帮你“记住”了这个关系）
 git push
 ```
 
@@ -108,31 +108,15 @@ git branch
 ```
 ![示例图片](/src/2.png)
 
-* 示例
-```
-# 1. 克隆 main 分支
-git clone -b main https://github.com/ShineLShine/test.git
-cd test
-
-# 2. 创建功能分支
-git switch -c 新分支名
-
-# 3. 开发并提交
-git add .
-git commit -m "feat: 增加串口自动监听"
-
-# 4. 推送分支
-git push -u origin 新分支名
-```
 ---
-### 1.3 查看分支
+### 1.3 查看分支 `git branch`
 ```
 git branch
-查看远程分支
+#查看远程分支
 git branch -r
 ```
 ---
-### 1.4 更新远程信息：`git fetch`
+### 1.4 更新远程信息 `git fetch`
 ```bash
 git fetch origin
 git branch -r
@@ -155,7 +139,7 @@ git pull
 查看当前修改状态
 git status
 
-添加所有修改
+添加所有修改(注意：这里的add .中间必须有一个空格)
 git add .
 # 或指定文件
 git add src/app.py
