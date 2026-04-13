@@ -7,7 +7,7 @@ git --version
 ```
 ### 0.2 配置身份（首次使用建议配置）
 ```bash
-git config --global user.name "Your Name"
+git config --global user.name  "Your Name"
 git config --global user.email "you@example.com"
 ```
 ### 0.3 推荐基础配置（可选）
@@ -396,4 +396,7 @@ git push origin --delete shine
 放弃合并/变基       git merge --abort / git rebase --abort
 切 tag/commit       git checkout <tag-or-hash>
 ```
+![示例图片](/src/dp.JPG)
+![示例图片](/src/hs.jpg)
+![示例图片](/src/image.jpg)
 ---
