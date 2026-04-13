@@ -500,8 +500,4 @@ git push origin --delete shine
 放弃合并/变基       git merge --abort / git rebase --abort
 切 tag/commit       git checkout <tag-or-hash>
 ```
-![示例图片](/src/dp.JPG)
-![示例图片](/src/hs.jpg)
-![示例图片](/src/image.jpg)
-
 ---
