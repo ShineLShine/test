@@ -337,4 +337,7 @@ git stash pop
 放弃合并/变基       git merge --abort / git rebase --abort
 切 tag/commit       git checkout <tag-or-hash>
 ```
+![示例图片](/src/dp.png)
+![示例图片](/src/hs.png)
+![示例图片](/src/image.png)
 ---
