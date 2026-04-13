@@ -215,7 +215,146 @@ git push origin main
 > ⚠ 不要对已经共享给他人的公共分支随意 rebase。
 ---
 ## 4. 合并冲突解决（详细流程）
-### 4.0 没有冲突，那就制造一个冲突😂
+### 4.1 冲突是怎么产生的?
+满足这 3 个条件之一就会产生冲突
+* ✅ 同一个文件
+* ✅ 同一段代码
+* ✅ 不同分支都改过
+---
+### 4.2 冲突文件示例
+```text
+<<<<<<< HEAD
+console.log("main branch");
+=======
+console.log("feature branch");
+>>>>>>> feature/login
+```
+---
+### 4.3 解决冲突步骤
+#### 放弃本次合并（不想合了）
+```
+git merge --abort
+```
+
+#### ✅ 方法一
+```
+1. 手动修改代码
+你决定最终代码如下：
+Cprintf("UART initialization failed\n");
+
+2. 并删除所有冲突标志：
+Plain Text<<<<<<<=======>>>>>>>显示更多行
+
+3. 标记冲突已解决
+git add src/main.c
+
+4. 完成合并提交（Git 会自动生成 merge commit 信息）
+git commit
+```
+
+#### ✅ 方法二
+```
+1. 手动修改代码
+你决定最终代码如下：
+Cprintf("UART initialization failed\n");
+
+2. 并删除所有冲突标志：
+Plain Text<<<<<<<=======>>>>>>>显示更多行
+
+3. merge 冲突
+git commit
+
+4. rebase 冲突
+git rebase --continue
+
+5. 推送
+git push
+```
+---
+### 4.4 常用“救命”命令
+```bash
+git merge --abort
+👉放弃当前正在进行的 merge，代码回到 merge 之前的状态
+👉什么时候用,当你执行了
+git merge shine
+👉然后发现,冲突太多、合并错分支了、暂时不想合了
+👉并且你看到状态是：
+git status
+👉# You are in the middle of a merge
+👉这时就用
+
+git rebase --abort
+放弃当前正在进行的 rebase，回到 rebase 开始前，和上面用法相同
+
+git diff
+👉 查看「差异」—— 看哪里改了
+👉 看工作区 vs 暂存区
+👉 你改了但还没 git add 的内容
+
+git diff --staged
+👉  看暂存区 vs HEAD
+👉 已 git add，但还没 git commit
+
+git diff commit1 commit2
+👉  对比两个提交
+👉 diff 输出怎么看
+* -：被删除的内容
+* +：新增的内容
+
+git diff --merge
+👉  在 merge 冲突时，专门用来看「冲突双方的差异」
+⚠️ 只有在以下状态下才有输出：
+* 正在 merge 冲突中
+* 文件里有 <<<<<<< ======= >>>>>>>
+❌ 否则执行会 没有任何输出
+
+```
+正在 merge？
+│
+├─ 想继续解决冲突 → git diff / git diff --merge
+│
+├─ 不想合了 → git merge --abort
+│
+正在 rebase？
+│
+├─ 想继续 → git rebase --continue
+│
+└─ 后悔了 → git rebase --abort
+```
+---
+### 4.5 合并提交（merge commit）的提交说明界面
+![示例图片](/src/3.png)
+#### ✅ 方案一（最常用）：直接接受默认提交说明
+* 1️⃣ 按 Esc（确保不在编辑模式）
+* 2️⃣ 输入：:wq
+* 3️⃣ 按 Enter
+
+#### ✅ 方案二：修改提交说明再保存
+* 1️⃣ 按 i（进入编辑模式）
+* 2️⃣ 把第一行改成你想要的，例如：merge: 合并 shine 分支到 main
+* 3️⃣ 按 Esc
+* 4️⃣ 输入：:wq
+* 5️⃣ 按 Enter
+
+#### ❌ 方案三：放弃这次合并（不建议用）
+* ⚠️ 如果你不想完成这次合并：:q!
+* ⚠️ 这样会终止 merge
+* ⚠️ 一般只在“合并错分支”的情况下用
+
+#### ✅怎么确认合并完成了
+退出 Vim 之后，看到命令行没有报错，再执行：
+```
+git status
+```
+如果看到：
+```
+On branch main
+nothing to commit, working tree clean
+```
+说明：shine → main 合并已完成,本地 main 是最新的
+
+
+### 4.6 没有冲突，那就制造一个冲突😂
 ```
 1️⃣ 当前在 main 分支
 git switch main
@@ -275,12 +414,6 @@ git push origin main
 
 #### 冲突编辑器:
 ![示例图片](/src/5.png)
-
-### 4.1 冲突是怎么产生的?
-满足这 3 个条件之一就会产生冲突
-* ✅ 同一个文件
-* ✅ 同一段代码
-* ✅ 不同分支都改过
   
 ### 4.2 冲突提示
 ```text
@@ -288,97 +421,6 @@ CONFLICT (content): Merge conflict in .....
 
 git status
 ```
----
-### 4.3 冲突文件示例
-```text
-<<<<<<< HEAD
-console.log("main branch");
-=======
-console.log("feature branch");
->>>>>>> feature/login
-```
----
-### 4.4 解决冲突步骤
-#### 放弃本次合并（不想合了）
-```
-git merge --abort
-```
-
-#### ✅ 方法一
-```
-1. 手动修改代码
-你决定最终代码如下：
-Cprintf("UART initialization failed\n");
-
-2. 并删除所有冲突标志：
-Plain Text<<<<<<<=======>>>>>>>显示更多行
-
-3. 标记冲突已解决
-git add src/main.c
-
-4. 完成合并提交（Git 会自动生成 merge commit 信息）
-git commit
-```
-
-#### ✅ 方法二
-```
-1. 手动修改代码
-你决定最终代码如下：
-Cprintf("UART initialization failed\n");
-
-2. 并删除所有冲突标志：
-Plain Text<<<<<<<=======>>>>>>>显示更多行
-
-3. merge 冲突
-git commit
-
-4. rebase 冲突
-git rebase --continue
-
-5. 推送
-git push
-```
----
-### 4.5 常用“救命”命令
-```bash
-git merge --abort
-git rebase --abort
-
-git diff
-git diff --merge
-```
-
-### 4.6 合并提交（merge commit）的提交说明界面
-![示例图片](/src/3.png)
-#### ✅ 方案一（最常用）：直接接受默认提交说明
-* 1️⃣ 按 Esc（确保不在编辑模式）
-* 2️⃣ 输入：:wq
-* 3️⃣ 按 Enter
-
-#### ✅ 方案二：修改提交说明再保存
-* 1️⃣ 按 i（进入编辑模式）
-* 2️⃣ 把第一行改成你想要的，例如：merge: 合并 shine 分支到 main
-* 3️⃣ 按 Esc
-* 4️⃣ 输入：:wq
-* 5️⃣ 按 Enter
-
-#### ❌ 方案三：放弃这次合并（不建议用）
-* ⚠️ 如果你不想完成这次合并：:q!
-* ⚠️ 这样会终止 merge
-* ⚠️ 一般只在“合并错分支”的情况下用
-
-#### ✅怎么确认合并完成了
-退出 Vim 之后，看到命令行没有报错，再执行：
-```
-git status
-```
-如果看到：
-```
-On branch main
-nothing to commit, working tree clean
-```
-说明：shine → main 合并已完成,本地 main 是最新的
-
 ---
 ## 5. 获取指定版本代码（tag / commit / branch）
 ### 5.1 查看 tag
